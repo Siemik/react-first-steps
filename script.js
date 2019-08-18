@@ -25,64 +25,73 @@ var movies = [
   }
 ];
 
-var moviesElements = movies.map(function (movie) {
-  return React.creatElement(Movie, {kay: movie.id, movie: movie})
-})
+var Movie = React.createClass ({
+    propTypes: {
+        movie: React.PropTypes.object.isRequired
+    },
+    render: function() {
+        return (
+          React.createElement('li', {key: this.props.movie.id},
+            React.createElement(MovieTitle, {title: this.props.movie.title}),
+            React.createElement(MovieDescription, {description: this.props.movie.desc}),
+            React.createElement(MoviePoster, {image: this.props.movie.poster}),
+            )
+        )
+    },
+});
 
-//class
-var MovieTitle = React.creatClass({
-  propTypes: {
-    title: React.PropTypes.string.isRequired
-  },
-  render: function () {
-    retur {
-      React.createElement('h2', {}, this.props.title)
-    }
-  }
-})
+var MoviePoster = React.createClass ({
+    propTypes: {
+        poster: React.PropTypes.object.isRequired
+    },
+    render: function () {
+        return (
+          React.createElement('img', {src: this.props.image})
+        )
+    },
+});
 
-var MovieDesc = React.creatClass({
-  propTypes: {
-    desc: React.PropTypes.string.isRequired
-  },
-  render: function () {
-    return (
-      React.createElement('p', {}, this.props.desc)
-    )
-  }
-})
+var MovieTitle = React.createClass ({
+    propTypes: {
+        title: React.PropTypes.string.isRequired
+    },
+    render: function () {
+        return (
+          React.createElement('h2', {}, this.props.title)
+        )
+    },
+});
 
-var MoviePoster = React.creatClass({
-  propTypes: {
-    poster: React.PropTypes.string.isRequired
-  },
-  render: function () {
-    return (
-      React.creatElement('img', {src: this.props.poster})
-    )
-  }
-})
+var MovieDescription = React.createClass({
+    propTypes: {
+        description: React.PropTypes.string.isRequired
+    },
+    render: function() {
+        return (
+          React.createElement('p', {}, this.props.description)
+        )
+    },
+});
 
-var Movie = React.creatClass({
-  propTypes: {
-    movie: React.propTypes.object.isRequired
-  },
-  render: function () {
-    return (
-      React.createElement('li', {src: this.props.movie.id},
-        React.creatElement(MovieTitle, {this.props.mobie.title}),
-          React.creatElement(MovieDesc, {desc: this.props.mobie.desc}),
-            React.creatElement(MoviePoster, {poster: this.props.mobie.poster})
-      )
-    )
-  }
-})
+var MoviesList = React.createClass({
+    propTypes: {
+        movies: React.PropTypes.array.isRequired
+    },
+    render: function() {
+        return (
+          React.createElement('div', {},
+            React.createElement('h1', {}, 'Lista filmwów'),
+            React.createElement('ul', {}, moviesElements(this.props.movies))
+            )
+        )
+    },
+});
 
-var element =
-    React.createElement('div', {},
-      React.createElement('h1', {}, 'Lista Filmów'),
-      React.createElement('ul', {}, moviesElements)
-  );
-
+var moviesElements = function(movies) {
+    return movies.map(function(movie) {
+      return React.createElement(Movie, {key: movie.id, movie: movie});
+    });
+};
+var element = React.createElement(MoviesList, {movies: movies});
 
 ReactDOM.render(element, document.getElementById('app'));
